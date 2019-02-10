@@ -3,29 +3,29 @@
 #include <string.h>
 #include "list.h"
 
-struct Element {
+struct Element {	// Data structure for bidirectional list
 	void *value;
 	Element *prev;
 	Element *next;
 };
 
-void save(List list, char fileName[], unsigned int size) {
+void save(List list, char fileName[], unsigned int size) {	// Saving list's value on a text file
 	FILE *fp = fopen(fileName, "wb");
-	for (unsigned int i = 0; i < list.length; i++)
+	for (unsigned int i = 0; i < list.length; i++)	// Cicles through all elements of the list
 		fwrite(get(list, i), size, 1, fp);
 	fclose(fp);
 }
 
-List importList(char fileName[], unsigned int size) {
+List importList(char fileName[], unsigned int size) {	// Loads values stored in a text file in a linked list
 	List list = { NULL, NULL };
 	FILE *fp = fopen(fileName, "rb");
-	void *element = malloc(size);
-	do {
-		fread(element, size, 1, fp);
+	void *element = malloc(size);	// Dynamically allocates memory for a node
+	do {	// Cycles through the list
+		fread(element, size, 1, fp);	// Uses element as a "temporary variable"
 		if (!feof(fp))
-			add(&list, element, size);
-	} while (!feof(fp));
-	free(element);
+			add(&list, element, size);	// Adds the element to the list through the add function (defined below)
+	} while (!feof(fp));	// Exits at the end of the file
+	free(element);	// Deallocates element, used before as a "temporary variable"
 	fclose(fp);
 	return list;
 }
@@ -37,17 +37,19 @@ void print(List list) {
 	puts("");
 }
 
-void add(List *list, void *value, unsigned int size) {
+void add(List *list, void *value, unsigned int size) {	// Adds a new node to list, with a value of <size> bytes
 	Element *element = (Element*) malloc(sizeof(Element));
-	element->value = malloc(size);
+	element->value = malloc(size);	// Allocates memory for the new element
 	element->next = NULL;
 	element->prev = NULL;
 	memcpy(element->value, value, size);
-	if (list->last != NULL) {
+	if (list->last != NULL) {	// Checks if the list is not empty
 		list->last->next = element;
 		element->prev = list->last;
-	} else
-		list->first = element;
+	}
+	else	{
+			list->first = element;	// If the list is empty, the new element becomes the first one
+	}
 	list->last = element;
 	list->length++;
 }
@@ -196,4 +198,3 @@ List clone(List list, unsigned int size) {
 		add(&aus, get(list, i), size);
 	return aus;
 }
-
