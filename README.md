@@ -2,7 +2,7 @@
 
 This is
 *list.h*
-by [devitcode]
+by devitcode
 
 ## License
 
