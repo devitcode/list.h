@@ -2,7 +2,7 @@
 
 This is
 *list.h*
-by [Davide Cosentino](https://www.linkedin.com/in/davide-cosentino/).
+by [devitcode]
 
 ## License
 
